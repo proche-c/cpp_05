@@ -1,10 +1,12 @@
 
-SRCS = ClapTrap.cpp \
+SRCS = Bureaucrat.cpp \
+	Form.cpp \
 	main.cpp
 
-HEADERS = ClapTrap.hpp \
+HEADERS = Bureaucrat.hpp \
+		Form.hpp
 
-NAME = claptrap
+NAME = form
 
 CC = c++
 
