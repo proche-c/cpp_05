@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ClapTrap.cpp                                       :+:      :+:    :+:   */
+/*   Bureaucrat.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: proche-c <proche-c@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,121 +10,157 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "ClapTrap.hpp"
+#include "Bureaucrat.hpp"
 
-ClapTrap::ClapTrap(std::string name):_name(name), _hitPoints(10), _energyPoints(10), _attackDamage(0)
+const char* Bureaucrat::GradeTooHighException::what() const throw()
+{
+	return "error: Bureaucrat: grade too high.\n";
+}
+
+const char* Bureaucrat::GradeTooLooException::what() const throw()
+{
+	return "error: Bureaucrat: grade too low.\n";
+}
+
+Bureaucrat::Bureaucrat(void):_name("Default"),_grade(150)
 {
 	std::cout << "Default constructor called for " << this->getName() << std::endl;
 	return ;
 }
 
-ClapTrap::ClapTrap(ClapTrap const &src)
+Bureaucrat::Bureaucrat(std::string const name):_name(name),_grade(150)
+{
+	std::cout << "Default constructor called for " << this->getName() << std::endl;
+	return ;
+}
+
+Bureaucrat::Bureaucrat(std::string const name, int grade):_name(name),_grade(grade)
+{
+	try
+	{
+		if (this->_grade < 1)
+			throw Bureaucrat::GradeTooHighException();
+		else if (this->_grade > 150)
+			throw Bureaucrat::GradeTooLooException();
+		std::cout << "Default constructor called for " << this->getName() << std::endl;
+	}
+	catch(const Bureaucrat::GradeTooHighException& e)
+	{
+		std::cout << this->getName() << ": " << e.what();
+	}
+	catch(const Bureaucrat::GradeTooLooException& e)
+	{
+		std::cout << this->getName() << ": " << e.what();
+	}
+	return ;
+}
+
+Bureaucrat::Bureaucrat(Bureaucrat const &src)
 {
 	std::cout << "Copy constructor called" << std::endl;
 	*this = src;
 	return ;
 }
 
-ClapTrap::~ClapTrap(void)
+Bureaucrat::~Bureaucrat(void)
 {
 	std::cout <<"Destructor called for " << this->getName() << std::endl;
 	return ;
 }
 
-ClapTrap & ClapTrap::operator=(ClapTrap const &src)
+Bureaucrat & Bureaucrat::operator=(Bureaucrat const &src)
 {
 	std::cout << "Copy assignment operator called" << std::endl;
 	if (this != &src)
 	{
-		this->_name = src.getName();
-		this->_hitPoints = src.getHitPoints();
-		this->_energyPoints = src.getEnergyPoints();
-		this->_attackDamage = src.getAttackDamage();
+		this->_grade = src.getGrade();
 	}
 	return *this;
 }
 
-std::string	ClapTrap::getName(void) const
+std::string Bureaucrat::getName(void) const
 {
 	return this->_name;
 }
 
-void	ClapTrap::setName(std::string name)
+int	Bureaucrat::getGrade(void) const
 {
-	this->_name = name;
-	return ;
+	return this->_grade;
 }
 
-int	ClapTrap::getHitPoints(void) const
+void Bureaucrat::increaseGrade(void)
 {
-	return this->_hitPoints;
-}
-
-void	ClapTrap::setHitPoints(int hitPoints)
-{
-	this->_hitPoints = hitPoints;
-	return ;
-}
-
-int	ClapTrap::getEnergyPoints(void) const
-{
-	return this->_energyPoints;
-}
-
-void	ClapTrap::setEnergyPoints(int energyPoints)
-{
-	this->_energyPoints = energyPoints;
-	return ;
-}
-
-int	ClapTrap::getAttackDamage(void) const
-{
-	return this->_attackDamage;
-}
-
-void	ClapTrap::setAttackDamage(int attackDamage)
-{
-	this->_attackDamage = attackDamage;
-	return ;
-}
-
-void ClapTrap::attack(const std::string &target)
-{
-	if (this->_energyPoints > 0 && this->_hitPoints > 0)
+	if (this->_grade > 0 && this->_grade < 151)
 	{
-		std:: cout << this->getName() << " attacks " << target << " causing " << this->getAttackDamage() << " points of damage!" << std::endl;
-		this->_energyPoints--;
+		try
+		{
+			if (this->_grade == 1)  
+				throw Bureaucrat::GradeTooHighException();
+			else
+				this->_grade--;
+		}
+		catch (Bureaucrat::GradeTooHighException& e)
+		{
+			std::cout << this->getName() << ": " << e.what();
+		}
 	}
-	else
-	{
-		std::cout << this->getName() << " can't attack because he has " << this->getHitPoints() << " and " << this->getEnergyPoints() << " energy points." << std::endl;
-	}
-	return ;
 }
 
-void ClapTrap::takeDamage(unsigned int amount)
+void Bureaucrat::decreaseGrade(void)
 {
-	this->_hitPoints = this->_hitPoints - amount;
-	return ;
+	if (this->_grade > 0 && this->_grade < 151)
+	{
+		try
+		{
+			if (this->_grade == 150)
+				throw Bureaucrat::GradeTooLooException();
+			else
+				this->_grade++;
+		}
+		catch (Bureaucrat::GradeTooLooException& e)
+		{
+			std::cout << this->getName() << ": " << e.what();
+		}
+	}
 }
 
-void ClapTrap::beRepaired(unsigned int amount)
+void		Bureaucrat::signForm(AForm &f)
 {
-	if (this->_energyPoints > 0)
+	if (this->_grade > 0 && this->_grade < 151)
 	{
-		this->_energyPoints--;
-		this->_hitPoints = this->_hitPoints + amount;
+		try
+		{
+			if (f.getGradeToSign() < this->getGrade())
+				throw Bureaucrat::GradeTooLooException();
+			std::cout << this->getName() << " signed " << f.getName() << std::endl;
+		}
+		catch(const Bureaucrat::GradeTooLooException& e)
+		{
+			std::cout << this->getName() << " couldn't sign " << f.getName() << " because " << e.what();
+		}
 	}
-	else
-	{
-		std::cout << this->getName() << " can't be repaired because he has " << this->getEnergyPoints() << " energy points." << std::endl;
-	}
-	return ;
+	
 }
 
-std::ostream & operator<<(std::ostream &o, ClapTrap const &c)
+void		Bureaucrat::executeForm(AForm const & form)
 {
-	o << c.getName() << " has " << c.getHitPoints() << " hit points, " << c.getEnergyPoints() << " energy points and " << c.getAttackDamage() << " attack damage." << std::endl;
+	if (this->_grade > 0 && this->_grade < 151)
+	{
+		try
+		{
+			if (form.getGradeToExec() < this->getGrade())
+				throw Bureaucrat::GradeTooLooException();
+			std::cout << this->getName() << " executed " << form.getName() << std::endl;
+		}
+		catch(const Bureaucrat::GradeTooLooException& e)
+		{
+			std::cout << this->getName() << " couldn't execute " << form.getName() << " because " << e.what();
+		}
+	}	
+}
+
+std::ostream & operator<<(std::ostream &o, Bureaucrat const &c)
+{
+	o << c.getName() << ", bureaucrat grade " << c.getGrade() << std::endl;
 	return o;
 }

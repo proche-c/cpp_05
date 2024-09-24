@@ -1,10 +1,20 @@
 
-SRCS = ClapTrap.cpp \
+SRCS =	Bureaucrat.cpp \
+	AForm.cpp \
+	ShrubberyCreationForm.cpp \
+	RobotomyRequestForm.cpp \
+	PresidentialPardonForm.cpp \
 	main.cpp
 
-HEADERS = ClapTrap.hpp \
+HEADERS =	Bureaucrat.hpp \
+	AForm.hpp \
+	ShrubberyCreationForm.hpp \
+	RobotomyRequestForm.hpp \
+	PresidentialPardonForm.hpp
 
-NAME = claptrap
+
+
+NAME = aforms
 
 CC = c++
 
