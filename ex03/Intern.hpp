@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Intern.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: proche-c <proche-c@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,26 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucrat.hpp"
+#ifndef INTERN_HPP
+# define INTERN_HPP
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
-int main( void )
+class AForm;
+
+class Intern
 {
-	Form	f0("Invalid", 0, 7);
-	std::cout << "****************************" << std::endl;
-	Bureaucrat	b1("Annoying", 1);
-	std::cout << b1;
-	Form	f1("form_1", 2, 2);
-	std::cout << f1;
-	b1.signForm(f1);
-	std::cout << "f1.isSigned: " << f1.getIsSigned() << std::endl;
-	std::cout << f1;
-	std::cout << "****************************" << std::endl;
-	Bureaucrat	b2("Looser", 145);
-	std::cout << b2;
-	Form	f2("form_2", 2, 2);
-	std::cout << f2;
-	b2.signForm(f2);
-	std::cout << f2;
+	public:
+		Intern(void);
+		Intern(Intern const &src);
+		~Intern(void);
 
-  return 0;
-}
+		Intern & operator=(Intern const &src);
+
+		AForm	*makeForm(std::string const &type, std::string const &target);
+};
+
+std::ostream & operator<<(std::ostream &o, Intern const &c);
+
+#endif

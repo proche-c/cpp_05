@@ -29,7 +29,7 @@ class RobotomyRequestForm: public AForm
 
 		std::string	getTarget(void) const;
 
-		virtual void	executing(Bureaucrat const & executor);
+		virtual void	executing(Bureaucrat const & executor) const;
 
 	private:
 		std::string	_target;

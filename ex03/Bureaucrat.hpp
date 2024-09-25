@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ClapTrap.hpp                                       :+:      :+:    :+:   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: proche-c <proche-c@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,42 +10,49 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLAPTRAP_HPP
-# define CLAPTRAP_HPP
+#ifndef BUREAUCRAT_HPP
+# define BUREAUCRAT_HPP
 #include <string>
 #include <iostream>
+#include <stdexcept>
+#include "AForm.hpp"
 
-class ClapTrap
+
+class Bureaucrat
 {
 	public:
-		ClapTrap(std::string name);
-		ClapTrap(ClapTrap const &src);
-		~ClapTrap(void);
+		class GradeTooHighException: public std::exception
+		{
+			public:
+			virtual const char* what() const throw();
+		};
+		class GradeTooLooException: public std::exception
+		{
+			public:
+			virtual const char* what() const throw();
+		};
+		Bureaucrat(void);
+		Bureaucrat(std::string const name);
+		Bureaucrat(std::string const name, int grade);
+		Bureaucrat(Bureaucrat const &src);
+		~Bureaucrat(void);
 
-		ClapTrap & operator=(ClapTrap const &src);
+		Bureaucrat & operator=(Bureaucrat const &src);
 
-		std::string	getName(void) const;
-		void	setName(std::string name);
-		int	getHitPoints(void) const;
-		void	setHitPoints(int hitPoints);
-		int	getEnergyPoints(void) const;
-		void	setEnergyPoints(int energyPoints);
-		int	getAttackDamage(void) const;
-		void	setAttackDamage(int attackDamage);
+		std::string getName(void) const;
+		int			getGrade(void) const;
+		void 		increaseGrade(void);
+		void 		decreaseGrade(void);
 
-		void attack(const std::string &target);
-		void takeDamage(unsigned int amount);
-		void beRepaired(unsigned int amount);
+		void		signForm(AForm& f);
+		void		executeForm(AForm const & form);
 
 	private:
-		std::string	_name;
-		int			_hitPoints;
-		int			_energyPoints;
-		int			_attackDamage;
-		
+		std::string const	_name;
+		int					_grade;
 
 };
 
-std::ostream & operator<<(std::ostream &o, ClapTrap const &c);
+std::ostream & operator<<(std::ostream &o, Bureaucrat const &c);
 
 #endif

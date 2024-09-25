@@ -26,7 +26,7 @@ class Form
 			public:
 			virtual const char* what() const throw();
 		};
-		class GradeTooLooException: public std::exception
+		class GradeTooLowException: public std::exception
 		{
 			public:
 			virtual const char* what() const throw();

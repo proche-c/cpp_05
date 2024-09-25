@@ -67,6 +67,13 @@ void	RobotomyRequestForm::executing(Bureaucrat const & executor) const
 		std::cout << this->getTarget() << " robotomy failed." << std::endl;
 }
 
+AForm	*RobotomyRequestForm::makeForm(AForm *form, std::string const &type, std::string const &target)
+{
+	if (form == NULL && type == "robotomy request")
+		return (new RobotomyRequestForm(target));
+	return(form);
+}
+
 std::ostream & operator<<(std::ostream &o, RobotomyRequestForm const &c)
 {
 	if (c.getIsSigned() == 0)

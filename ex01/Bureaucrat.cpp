@@ -130,16 +130,14 @@ void		Bureaucrat::signForm(Form &f)
 	{
 		try
 		{
-			if (f.getGradeToSign() < this->getGrade())
-				throw Bureaucrat::GradeTooLooException();
+			f.beSigned(*this);
 			std::cout << this->getName() << " signed " << f.getName() << std::endl;
 		}
-		catch(const Bureaucrat::GradeTooLooException& e)
+		catch(const Form::GradeTooLowException& e)
 		{
 			std::cout << this->getName() << " couldn't sign " << f.getName() << " because " << e.what();
 		}
 	}
-	
 }
 
 std::ostream & operator<<(std::ostream &o, Bureaucrat const &c)

@@ -28,9 +28,11 @@ class ShrubberyCreationForm: public AForm
 
 		ShrubberyCreationForm & operator=(ShrubberyCreationForm const &src);
 
-		std::string	getTarget(void) const;
+		std::string		getTarget(void) const;
 
 		virtual void	executing(Bureaucrat const & executor) const;
+
+		static AForm	*makeForm(AForm *form, std::string const &type, std::string const &target);
 
 	private:
 		std::string	_target;

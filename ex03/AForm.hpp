@@ -36,22 +36,30 @@ class AForm
 			public:
 			virtual const char* what() const throw();			
 		};
+		class InvalidFormTypeException: public std::exception
+		{
+			public:
+			virtual const char* what() const throw();			
+		};
 		AForm(void);
 		AForm(std::string const name);
 		AForm(std::string const name, int gradeToSign, int gradeToExec);
 		AForm(AForm const &src);
-		~AForm(void);
+		virtual ~AForm(void);
 
 		AForm & operator=(AForm const &src);
 
-		std::string getName(void) const; 
-		int			getGradeToSign(void) const;
-		int			getGradeToExec(void) const;
-		bool		getIsSigned(void) const;
+		std::string 	getName(void) const; 
+		int				getGradeToSign(void) const;
+		int				getGradeToExec(void) const;
+		bool			getIsSigned(void) const;
+		virtual std::string	getTarget(void) const = 0;
 
-		void		beSigned(Bureaucrat &b);
+		void			beSigned(Bureaucrat &b);
 		void		execute(Bureaucrat const & executor) const;
 		virtual void	executing(Bureaucrat const & executor) const = 0;
+
+		static AForm	*makeForm(std::string const &type, std::string const &target);
 
 	private:
 		std::string const	_name;

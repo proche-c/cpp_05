@@ -18,7 +18,7 @@ const char* Form::GradeTooHighException::what() const throw()
 	return "error: Form: grade too high.\n";
 }
 
-const char* Form::GradeTooLooException::what() const throw()
+const char* Form::GradeTooLowException::what() const throw()
 {
 	return "error: Form: grade too low.\n";
 }
@@ -42,14 +42,14 @@ Form::Form(std::string const name, int gradeToSign, int gradeToExec):_name(name)
 		if (this->_gradeToSign < 1 || this->_gradeToExec < 1)
 			throw Form::GradeTooHighException();
 		else if (this->_gradeToSign > 150 || this->_gradeToExec > 150)
-			throw Form::GradeTooLooException();
+			throw Form::GradeTooLowException();
 		std::cout << "Default constructor called for " << this->getName() << std::endl;
 	}
 	catch(const Form::GradeTooHighException& e)
 	{
 		std::cout << this->getName() << ": " << e.what();
 	}
-	catch(const Form::GradeTooLooException& e)
+	catch(const Form::GradeTooLowException& e)
 	{
 		std::cout << this->getName() << ": " << e.what();
 	}
@@ -101,16 +101,12 @@ bool	Form::getIsSigned(void) const
 
 void	Form::beSigned(Bureaucrat &b)
 {
-	try
+
+	if (b.getGrade() > this->getGradeToSign())
 	{
-		if (b.getGrade() > this->getGradeToSign())
-			throw Form::GradeTooLooException();
-		this->_isSigned = 1;
+		throw Form::GradeTooLowException();
 	}
-	catch(const Form::GradeTooLooException& e)
-	{
-		std::cout << e.what();
-	}
+	this->_isSigned = 1;
 	
 }
 

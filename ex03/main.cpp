@@ -10,34 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include "ClapTrap.hpp"
+#include "Bureaucrat.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 int main( void )
 {
-  ClapTrap  robot("Terminator");
-  ClapTrap  hero("Sarah Connor");
+	Intern 	nerd;
+	Bureaucrat	b("Boss", 3);
+	AForm	*form;
 
-  std::cout << robot;
-  std::cout << hero;
+	form = nerd.makeForm("shrubbery creation", "park");
+	std::cout << *form;
+	b.signForm(*form);
+	std::cout << *form;
+	b.executeForm(*form);
+	delete form;
 
-  robot.setAttackDamage(4);
-  hero.setAttackDamage(5);
-  robot.attack("Sarah Connor");
-  hero.takeDamage(4);
-  hero.attack("Terminator");
-  robot.takeDamage(5);
+	AForm	*f_rr;
+	f_rr = nerd.makeForm("robotomy request", "lucas");
+	std::cout << *f_rr;
+	delete f_rr;
 
-  std::cout << robot;
-  std::cout << hero;
+	AForm	*f_pp;
+	f_pp = nerd.makeForm("presidential pardon", "Cercei");
+	std::cout << *f_pp;
+	delete f_pp;
 
-  hero.beRepaired(2);
-  hero.attack("Terminator");
-  robot.takeDamage(5);
-  robot.attack("Sarah Connor");
-
-  std::cout << robot;
-  std::cout << hero;
-
+	AForm	*f_other = NULL;
+	f_other = nerd.makeForm("other", "nobody");
+	delete f_other;
   return 0;
 }

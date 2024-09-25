@@ -60,6 +60,13 @@ void	PresidentialPardonForm::executing(Bureaucrat const & executor) const
 	std::cout << this->getTarget() << " has been pardoned by Zaphod Beeblebrox." << std::endl;
 }
 
+AForm	*PresidentialPardonForm::makeForm(AForm *form, std::string const &type, std::string const &target)
+{
+	if (form == NULL && type == "presidential pardon")
+		return (new PresidentialPardonForm(target));
+	return(form);
+}
+
 std::ostream & operator<<(std::ostream &o, PresidentialPardonForm const &c)
 {
 	if (c.getIsSigned() == 0)

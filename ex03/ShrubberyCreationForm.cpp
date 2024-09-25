@@ -69,6 +69,13 @@ void	ShrubberyCreationForm::executing(Bureaucrat const & executor) const
 	ofs.close();
 }
 
+AForm	*ShrubberyCreationForm::makeForm(AForm *form, std::string const &type, std::string const &target)
+{
+	if (form == NULL && type == "shrubbery creation")
+		return (new ShrubberyCreationForm(target));
+	return(form);
+}
+
 std::ostream & operator<<(std::ostream &o, ShrubberyCreationForm const &c)
 {
 	if (c.getIsSigned() == 0)

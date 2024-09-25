@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RobotomyRequestForm.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: proche-c <proche-c@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,26 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucrat.hpp"
+#ifndef ROBOTOMY_REQUEST_FORM_HPP
+# define ROBOTOMY_REQUEST_FORM_HPP
+#include "AForm.hpp"
+#include <random>
 
-int main( void )
+class Bureaucrat;
+
+class RobotomyRequestForm: public AForm
 {
-	Form	f0("Invalid", 0, 7);
-	std::cout << "****************************" << std::endl;
-	Bureaucrat	b1("Annoying", 1);
-	std::cout << b1;
-	Form	f1("form_1", 2, 2);
-	std::cout << f1;
-	b1.signForm(f1);
-	std::cout << "f1.isSigned: " << f1.getIsSigned() << std::endl;
-	std::cout << f1;
-	std::cout << "****************************" << std::endl;
-	Bureaucrat	b2("Looser", 145);
-	std::cout << b2;
-	Form	f2("form_2", 2, 2);
-	std::cout << f2;
-	b2.signForm(f2);
-	std::cout << f2;
+	public:
+		RobotomyRequestForm(void);
+		RobotomyRequestForm(std::string const &target);
+		RobotomyRequestForm(RobotomyRequestForm const &src);
+		~RobotomyRequestForm(void);
 
-  return 0;
-}
+		RobotomyRequestForm & operator=(RobotomyRequestForm const &src);
+
+		std::string	getTarget(void) const;
+
+		virtual void	executing(Bureaucrat const & executor) const;
+
+		static AForm	*makeForm(AForm *form, std::string const &type, std::string const &target);
+
+	private:
+		std::string	_target;
+
+};
+
+std::ostream & operator<<(std::ostream &o, RobotomyRequestForm const &c);
+
+#endif

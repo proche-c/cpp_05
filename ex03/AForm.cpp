@@ -12,6 +12,9 @@
 
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
 const char* AForm::GradeTooHighException::what() const throw()
 {
@@ -26,6 +29,11 @@ const char* AForm::GradeTooLowException::what() const throw()
 const char* AForm::FormNotSignedException::what() const throw()
 {
 	return "error: AForm: form not signed.\n";
+}
+
+const char* AForm::InvalidFormTypeException::what() const throw()
+{
+	return "error: AForm: invalid form type.\n";
 }
 
 AForm::AForm(void):_name("Default"), _isSigned(0), _gradeToSign(1), _gradeToExec(1)
@@ -120,6 +128,17 @@ void	AForm::execute(Bureaucrat const & executor) const
 	if (executor.getGrade() > this->getGradeToExec())
 		throw AForm::GradeTooLowException();
 	this->executing(executor);
+}
+
+AForm	*AForm::makeForm(std::string const &type, std::string const &target)
+{
+	AForm	*form;
+
+	form = NULL;
+	form = ShrubberyCreationForm::makeForm(form, type, target);
+	form = RobotomyRequestForm::makeForm(form, type, target);
+	form = PresidentialPardonForm::makeForm(form, type, target);
+	return form;
 }
 
 std::ostream & operator<<(std::ostream &o, AForm const &c)
