@@ -30,6 +30,13 @@ int main( void )
 	std::cout << f2;
 	b2.signForm(f2);
 	std::cout << f2;
+	std::cout << "****************************" << std::endl;
+	Form	f3;
+	f3 = f2;
+	std::cout << f3;
+	std::cout << "****************************" << std::endl;
+	Form	f4(f2);
+	std::cout << f4;
 
   return 0;
 }
