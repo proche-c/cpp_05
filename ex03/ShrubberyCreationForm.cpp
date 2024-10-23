@@ -59,7 +59,7 @@ void	ShrubberyCreationForm::executing(Bureaucrat const & executor) const
 	(void)executor;
 	std::cout << "executing ShrubberyCreationForm..." << std::endl;
 	std::string	fileName = this->getTarget() + "_shrubbery";
-	std::ofstream	ofs(fileName);
+	std::ofstream	ofs(fileName.c_str());
 	ofs << TREE;
 	if (ofs.fail())
 	{

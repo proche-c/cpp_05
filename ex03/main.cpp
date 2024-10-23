@@ -39,7 +39,7 @@ int main( void )
 	std::cout << *f_pp;
 	delete f_pp;
 
-	AForm	*f_other = NULL;
+	AForm	*f_other;
 	f_other = nerd.makeForm("other", "nobody");
 	delete f_other;
   return 0;

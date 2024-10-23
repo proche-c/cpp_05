@@ -57,10 +57,8 @@ std::string	RobotomyRequestForm::getTarget(void) const
 void	RobotomyRequestForm::executing(Bureaucrat const & executor) const
 {
 	(void)executor;
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> distrib(1, 100);
-	int rn = distrib(gen);
+	std::srand(std::time(0)); 
+	int rn = std::rand() % 100 + 1;
 	if (rn % 2 == 1)
 		std::cout << this->getTarget() << " has been robotomized successfully." << std::endl;
 	else

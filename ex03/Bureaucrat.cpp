@@ -55,7 +55,7 @@ Bureaucrat::Bureaucrat(std::string const name, int grade):_name(name),_grade(gra
 	return ;
 }
 
-Bureaucrat::Bureaucrat(Bureaucrat const &src)
+Bureaucrat::Bureaucrat(Bureaucrat const &src):_name(src.getName())
 {
 	std::cout << "Copy constructor called" << std::endl;
 	*this = src;
