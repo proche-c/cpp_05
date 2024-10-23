@@ -35,6 +35,9 @@ int main( void )
 	Bureaucrat	b5;
 	b5 = b4;
 	std::cout << b5;
+	std::cout << "****************************" << std::endl;
+	Bureaucrat	b6(b1);
+	std::cout << b6;
 
   return 0;
 }
