@@ -1,46 +1,47 @@
+NAME = aform
 
-SRCS =	Bureaucrat.cpp \
-	AForm.cpp \
-	ShrubberyCreationForm.cpp \
-	RobotomyRequestForm.cpp \
-	PresidentialPardonForm.cpp \
-	main.cpp
+SRCS_DIR	=	srcs
+INCS_DIR	=	includes
+OBJS_DIR	=	.objs
+DEPS_DIR	=	.deps
 
-HEADERS =	Bureaucrat.hpp \
-	AForm.hpp \
-	ShrubberyCreationForm.hpp \
-	RobotomyRequestForm.hpp \
-	PresidentialPardonForm.hpp
+SRCS	=	srcs/Bureaucrat.cpp \
+	srcs/AForm.cpp \
+	srcs/ShrubberyCreationForm.cpp \
+	srcs/RobotomyRequestForm.cpp \
+	srcs/PresidentialPardonForm.cpp \
+	srcs/main.cpp
+OBJS	=	$(patsubst $(SRCS_DIR)/%, $(OBJS_DIR)/%, $(SRCS:.cpp=.o))
+DEPS	=	$(patsubst $(SRCS_DIR)/%, $(DEPS_DIR)/%, $(SRCS:.cpp=.d))
 
+CC	=	c++
+CPPFLAGS	=	-Wall -Wextra -Werror -std=c++98 $(addprefix -I, $(INCS_DIR))
+CPPFLAGS	+=	-g -MMD -MP -MF $(DEPS_DIR)/$*.d -fsanitize=address
 
+RM = rm -rf
+MKDIR		=	mkdir -p
 
-NAME = aforms
+$(OBJS_DIR)/%.o	:	$(SRCS_DIR)/%.cpp
+		${CC} ${CPPFLAGS} -c $< -o $@
 
-CC = c++
-
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address
-
-RM = rm -f
-
-%.o: %.cpp Makefile ${HEADERS}
-		${CC} ${CFLAGS} -c $< -o $@
-
-OBJS =	${SRCS:.cpp=.o}
-DEPS =	${SRCS:.cpp=.d}
-
-all:	$(NAME)
-
--include $(DEPS)
+all:	directories $(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CPPFLAGS) $(OBJS) -o $(NAME)
 
-.PHONY: clean fclean re
+directories:
+	$(MKDIR)	$(OBJS_DIR)
+	$(MKDIR)	$(DEPS_DIR)
+
+.PHONY: all clean fclean re
 
 clean:
 	$(RM) $(OBJS) $(DEPS)
+	$(RM) $(OBJS_DIR) $(DEPS_DIR)
 
 fclean:	clean
 	$(RM) $(NAME)
 
 re:	fclean all
+
+-include $(DEPS)

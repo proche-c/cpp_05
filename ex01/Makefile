@@ -1,38 +1,44 @@
-
-SRCS = Bureaucrat.cpp \
-	Form.cpp \
-	main.cpp
-
-HEADERS = Bureaucrat.hpp \
-		Form.hpp
-
 NAME = form
 
-CC = c++
+SRCS_DIR	=	srcs
+INCS_DIR	=	includes
+OBJS_DIR	=	.objs
+DEPS_DIR	=	.deps
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address
+SRCS	=	srcs/Bureaucrat.cpp \
+	srcs/Form.cpp \
+	srcs/main.cpp
+OBJS	=	$(patsubst $(SRCS_DIR)/%, $(OBJS_DIR)/%, $(SRCS:.cpp=.o))
+DEPS	=	$(patsubst $(SRCS_DIR)/%, $(DEPS_DIR)/%, $(SRCS:.cpp=.d))
 
-RM = rm -f
+CC	=	c++
+CPPFLAGS	=	-Wall -Wextra -Werror -std=c++98 $(addprefix -I, $(INCS_DIR))
+CPPFLAGS	+=	-g -MMD -MP -MF $(DEPS_DIR)/$*.d -fsanitize=address
 
-%.o: %.cpp Makefile ${HEADERS}
-		${CC} ${CFLAGS} -c $< -o $@
+RM = rm -rf
+MKDIR		=	mkdir -p
 
-OBJS =	${SRCS:.cpp=.o}
-DEPS =	${SRCS:.cpp=.d}
+$(OBJS_DIR)/%.o	:	$(SRCS_DIR)/%.cpp
+		${CC} ${CPPFLAGS} -c $< -o $@
 
-all:	$(NAME)
-
--include $(DEPS)
+all:	directories $(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CPPFLAGS) $(OBJS) -o $(NAME)
 
-.PHONY: clean fclean re
+directories:
+	$(MKDIR)	$(OBJS_DIR)
+	$(MKDIR)	$(DEPS_DIR)
+
+.PHONY: all clean fclean re
 
 clean:
 	$(RM) $(OBJS) $(DEPS)
+	$(RM) $(OBJS_DIR) $(DEPS_DIR)
 
 fclean:	clean
 	$(RM) $(NAME)
 
 re:	fclean all
+
+-include $(DEPS)
